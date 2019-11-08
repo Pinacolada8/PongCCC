@@ -8,7 +8,7 @@
 #define WIDTH 1.333333*HEIGHT // 16/9 resolution
 #define MARGIN_HORIZONTAL 4
 #define PADDLE_RADIUS 2 //Total paddle size of 5
-#define DELAY_TIME 500
+#define DELAY_TIME 1500
 
 void printMatrix(char** matrix){
 	int i = 0,j=0;
@@ -48,8 +48,9 @@ void clear(){
 
 void loop(char** screen){
 	delay(DELAY_TIME);
-	clear();
-	printMatrix(screen);
+	printf("time");
+	//clear();
+	//printMatrix(screen);
 	loop(screen);
 }
 
