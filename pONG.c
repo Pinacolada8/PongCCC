@@ -3,12 +3,18 @@
 #include <string.h>
 #include <time.h>
 
+#ifdef _WIN32
+#include <Windows.h>
+#else
+#include <unistd.h>
+#endif
+
 
 #define HEIGHT 48
 #define WIDTH 1.333333*HEIGHT // 16/9 resolution
 #define MARGIN_HORIZONTAL 4
 #define PADDLE_RADIUS 2 //Total paddle size of 5
-#define DELAY_TIME 1500
+#define DELAY_TIME 500
 
 void printMatrix(char** matrix){
 	int i = 0,j=0;
@@ -20,6 +26,14 @@ void printMatrix(char** matrix){
 	}
 }
 
+void delay(int delayTime){
+	#ifdef _WIN32
+  	sleep(delayTime);
+  	#else
+  	usleep(delayTime*1000);  /* sleep for 100 milliSeconds */
+  	#endif
+}
+
 void drawPaddle(char** matrix, int paddlex, int paddley){
 	int i = 0;
 	for(i = 0; i <= PADDLE_RADIUS; i++){
@@ -28,15 +42,6 @@ void drawPaddle(char** matrix, int paddlex, int paddley){
 	}
 }
 
-void delay(int milli_seconds) 
-{  
-    // Stroing start time 
-    clock_t start_time = clock(); 
-  
-    // looping till required time is not acheived 
-    while (clock() < start_time + milli_seconds) 
-        ; 
-}
 
 void clear(){
 	#ifdef _WIN32
@@ -48,9 +53,8 @@ void clear(){
 
 void loop(char** screen){
 	delay(DELAY_TIME);
-	printf("time");
-	//clear();
-	//printMatrix(screen);
+	clear();
+	printMatrix(screen);
 	loop(screen);
 }
 
@@ -65,11 +69,11 @@ int main() {
 	for(i=0;i<WIDTH;i++){
 		screen[i] = malloc(sizeof(char)*HEIGHT);
 		for(j=0;j<HEIGHT;j++){
-			screen[i][j] = '*';
+			screen[i][j] = ' ';
 		}
 	}
 
-	screen[ballx][bally] = 'o';
+	screen[ballx][bally] = 'O';
 	drawPaddle(screen, paddleOnex, paddleOney);
 	drawPaddle(screen, paddleTwox, paddleTwoy);
 
