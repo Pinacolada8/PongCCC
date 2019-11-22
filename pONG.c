@@ -10,13 +10,11 @@
 #include <unistd.h>
 #endif
 
-
 #define HEIGHT 28
-#define WIDTH_VALUE 1.333333 * HEIGHT
-#define WIDTH (int)WIDTH_VALUE // 16/9 resolution
+#define WIDTH (1.333333*HEIGHT) // 16/9 resolution
 #define MARGIN_HORIZONTAL 4
 #define PADDLE_RADIUS 2 //Total paddle size of 5
-#define DELAY_TIME 1000
+#define DELAY_TIME 200
 
 char **screen;
 int ballx = WIDTH / 2, bally = HEIGHT / 2;
@@ -31,7 +29,7 @@ int speedBallx = 1, speedBally = 1;
 void printMatrix(char **matrix)
 {
 	int i = 0, j = 0;
-	for (i = 0; i < HEIGHT; i++)
+	for (i = 0; i < HEIGHT + 1; i++)
 	{
 		for (j = 0; j < WIDTH; j++)
 		{
@@ -45,7 +43,7 @@ void drawMargin(){
 	int i;
 	for(i=0;i<HEIGHT;i++){
 		screen[0][i] = '*';
-		screen[WIDTH][i] = '*';
+		screen[(int)WIDTH][i] = '*';
 	}
 
 	for(i=0;i<WIDTH;i++){
@@ -109,12 +107,12 @@ void draw()
 void movePaddles(int *paddley, int *paddleSpeed)
 {
 	*paddley += *paddleSpeed;
-	if (*paddley + PADDLE_RADIUS > HEIGHT)
+	if ((*paddley + PADDLE_RADIUS) > HEIGHT)
 	{
 		*paddley--;
 		*paddleSpeed *= -1;
 	}
-	if (*paddley - PADDLE_RADIUS < 0)
+	if ((*paddley - PADDLE_RADIUS) < 0)
 	{
 		*paddley++;
 		*paddleSpeed *= -1;
@@ -138,7 +136,7 @@ void gameOver()
 void moveBall()
 {
 	ballx += speedBallx;
-	if (ballx >= WIDTH - MARGIN_HORIZONTAL)
+	if (ballx > WIDTH - MARGIN_HORIZONTAL)
 	{
 		if ((bally >= paddleTwoy - PADDLE_RADIUS) &&
 			(bally <= paddleTwoy + PADDLE_RADIUS))
@@ -146,7 +144,7 @@ void moveBall()
 		else
 			gameOver();
 	}
-	if (ballx <= MARGIN_HORIZONTAL)
+	if (ballx < MARGIN_HORIZONTAL)
 	{
 		if ((bally >= paddleOney - PADDLE_RADIUS) &&
 			(bally <= paddleOney + PADDLE_RADIUS))
@@ -156,12 +154,12 @@ void moveBall()
 	}
 
 	bally += speedBally;
-	if (bally >= HEIGHT)
+	if (bally > HEIGHT)
 	{
 		bally--;
 		speedBally *= -1;
 	}
-	if (bally <= 0)
+	if (bally < 0)
 	{
 		bally++;
 		speedBally *= -1;
