@@ -11,7 +11,7 @@
 #endif
 
 #define HEIGHT 28
-#define WIDTH (1.333333*HEIGHT) // 16/9 resolution
+#define WIDTH (1.333333 * HEIGHT) // 16/9 resolution
 #define MARGIN_HORIZONTAL 4
 #define PADDLE_RADIUS 2 //Total paddle size of 5
 #define DELAY_TIME 200
@@ -39,14 +39,17 @@ void printMatrix(char **matrix)
 	}
 }
 
-void drawMargin(){
+void drawMargin()
+{
 	int i;
-	for(i=0;i<HEIGHT;i++){
+	for (i = 0; i < HEIGHT; i++)
+	{
 		screen[0][i] = '*';
 		screen[(int)WIDTH][i] = '*';
 	}
 
-	for(i=0;i<WIDTH;i++){
+	for (i = 0; i < WIDTH; i++)
+	{
 		screen[i][0] = '*';
 		screen[i][HEIGHT] = '*';
 	}
@@ -96,7 +99,7 @@ void clear()
 
 void draw()
 {
-	clear();	
+	clear();
 	screen[ballx][bally] = 'O';
 	drawPaddle(screen, paddleOnex, paddleOney);
 	drawPaddle(screen, paddleTwox, paddleTwoy);
@@ -178,8 +181,6 @@ void loop()
 
 int main()
 {
-	int i, j;
-
 	screen = malloc(sizeof(char *) * WIDTH);
 
 	loop();
