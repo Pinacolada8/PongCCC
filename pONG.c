@@ -79,7 +79,6 @@ void clearMatrix()
 	int i, j;
 	for (i = 0; i < WIDTH; i++)
 	{
-		screen[i] = malloc(sizeof(char) * HEIGHT);
 		for (j = 0; j < HEIGHT; j++)
 		{
 			screen[i][j] = ' ';
@@ -181,7 +180,16 @@ void loop()
 
 int main()
 {
+	int i, j;
 	screen = malloc(sizeof(char *) * WIDTH);
+	for (i = 0; i < WIDTH; i++)
+	{
+		screen[i] = malloc(sizeof(char) * HEIGHT);
+		for (j = 0; j < HEIGHT; j++)
+		{
+			screen[i][j] = ' ';
+		}
+	}
 
 	loop();
 

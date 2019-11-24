@@ -44,10 +44,8 @@ void draw()
 {
 	clearMatrix();
 	screen[ballx][bally] = 'O';
-	drawPaddle(screen, MARGIN_HORIZONTAL, paddleOney);
-	drawPaddle(screen, WIDTH - MARGIN_HORIZONTAL, paddleTwoy);
-	drawMargin();
-	printMatrix(screen);
+	drawPaddle(MARGIN_HORIZONTAL, paddleOney);
+	drawPaddle(WIDTH - MARGIN_HORIZONTAL, paddleTwoy);
 }
 
 void movePaddleTwo()
@@ -130,6 +128,7 @@ int main()
 	int quit = 0;
 	screen = malloc(sizeof(char *) * WIDTH);
 
+	LOOP:
 	movePaddleOne();
 	movePaddleTwo();
 	moveBall();
@@ -137,5 +136,6 @@ int main()
 
 	if (quit == 1) return 0; 
 
-	main();
+	goto LOOP;
+	return 0;
 }
