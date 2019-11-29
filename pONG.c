@@ -5,7 +5,7 @@
 
 #define WINDOWS _WIN64||_WIN32
 
-#ifdef WINDOWS
+#ifdef _WIN32
 #include <Windows.h>
 #else
 #include <unistd.h>
@@ -58,8 +58,8 @@ void drawMargin()
 
 void delay(int delayTime)
 {
-#ifdef WINDOWS
-	Sleep(delayTime);
+#ifdef _WIN32
+	sleep(delayTime);
 #else
 	usleep(delayTime * 1000); /* sleep for 100 milliSeconds */
 #endif
@@ -90,7 +90,7 @@ void clearMatrix()
 void clear()
 {
 	clearMatrix();
-#ifdef WINDOWS
+#ifdef _WIN32
 	system("cls");
 #else
 	system("clear");
