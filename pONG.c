@@ -3,18 +3,19 @@
 #include <string.h>
 #include <time.h>
 
-#define WINDOWS _WIN32 || _WIN64
+#define WINDOWS _WIN64||_WIN32
+
 #ifdef WINDOWS
 #include <Windows.h>
 #else
 #include <unistd.h>
 #endif
 
-#define HEIGHT 28
-#define WIDTH (1.333333 * HEIGHT) // 16/9 resolution
+#define HEIGHT 48
+#define WIDTH 64 // 16/9 resolution
 #define MARGIN_HORIZONTAL 4
-#define PADDLE_RADIUS 2 //Total paddle size of 5
-#define DELAY_TIME 200
+#define PADDLE_RADIUS 3 //Total paddle size of 5
+#define DELAY_TIME 300
 
 char **screen;
 int ballx = WIDTH / 2, bally = HEIGHT / 2;
@@ -29,9 +30,9 @@ int speedBallx = 1, speedBally = 1;
 void printMatrix(char **matrix)
 {
 	int i = 0, j = 0;
-	for (i = 0; i < HEIGHT + 1; i++)
+	for (i = 0; i <= HEIGHT; i++)
 	{
-		for (j = 0; j < WIDTH; j++)
+		for (j = 0; j <= WIDTH; j++)
 		{
 			printf("%c", matrix[j][i]);
 		}
@@ -42,13 +43,13 @@ void printMatrix(char **matrix)
 void drawMargin()
 {
 	int i;
-	for (i = 0; i < HEIGHT; i++)
+	for (i = 0; i <= HEIGHT; i++)
 	{
 		screen[0][i] = '*';
-		screen[(int)WIDTH][i] = '*';
+		screen[WIDTH][i] = '*';
 	}
 
-	for (i = 0; i < WIDTH; i++)
+	for (i = 0; i <= WIDTH; i++)
 	{
 		screen[i][0] = '*';
 		screen[i][HEIGHT] = '*';
@@ -67,7 +68,7 @@ void delay(int delayTime)
 void drawPaddle(char **matrix, int paddlex, int paddley)
 {
 	int i = 0;
-	for (i = 0; i <= PADDLE_RADIUS; i++)
+	for (i = 0; i < PADDLE_RADIUS; i++)
 	{
 		matrix[paddlex][paddley + i] = '|';
 		matrix[paddlex][paddley - i] = '|';
@@ -89,7 +90,7 @@ void clearMatrix()
 void clear()
 {
 	clearMatrix();
-#ifdef _WIN32
+#ifdef WINDOWS
 	system("cls");
 #else
 	system("clear");
@@ -109,12 +110,12 @@ void draw()
 void movePaddles(int *paddley, int *paddleSpeed)
 {
 	*paddley += *paddleSpeed;
-	if ((*paddley + PADDLE_RADIUS) > HEIGHT)
+	if ((*paddley + PADDLE_RADIUS) >= HEIGHT)
 	{
 		*paddley--;
 		*paddleSpeed *= -1;
 	}
-	if ((*paddley - PADDLE_RADIUS) < 0)
+	if ((*paddley - PADDLE_RADIUS) <= 0)
 	{
 		*paddley++;
 		*paddleSpeed *= -1;
@@ -125,14 +126,14 @@ void gameOver()
 {
 	ballx = WIDTH / 2;
 	bally = HEIGHT / 2;
-	paddleOnex = MARGIN_HORIZONTAL;
-	paddleOney = HEIGHT / 2;
-	paddleOneSpeed = -1;
-	paddleTwox = WIDTH - MARGIN_HORIZONTAL,
-	paddleTwoy = HEIGHT / 2;
-	paddleTwoSpeed = 1;
-	speedBallx = 1;
-	speedBally = 1;
+	//paddleOnex = MARGIN_HORIZONTAL;
+	//paddleOney = HEIGHT / 2;
+	//paddleOneSpeed = -1;
+	//paddleTwox = WIDTH - MARGIN_HORIZONTAL,
+	//paddleTwoy = HEIGHT / 2;
+	//paddleTwoSpeed = 1;
+	//speedBallx = 1;
+	//speedBally = 1;
 }
 
 void moveBall()
@@ -156,12 +157,12 @@ void moveBall()
 	}
 
 	bally += speedBally;
-	if (bally > HEIGHT)
+	if (bally >= HEIGHT)
 	{
 		bally--;
 		speedBally *= -1;
 	}
-	if (bally < 0)
+	if (bally <= 0)
 	{
 		bally++;
 		speedBally *= -1;
@@ -175,22 +176,21 @@ void loop()
 	movePaddles(&paddleTwoy, &paddleTwoSpeed);
 	moveBall();
 	draw();
-	loop(screen);
+	loop();
 }
 
 int main()
 {
 	int i, j;
-	screen = malloc(sizeof(char *) * WIDTH);
-	for (i = 0; i < WIDTH; i++)
+	screen = malloc(sizeof(char *) * (WIDTH + 1));
+	for (i = 0; i < WIDTH + 1; i++)
 	{
-		screen[i] = malloc(sizeof(char) * HEIGHT);
-		for (j = 0; j < HEIGHT; j++)
+		screen[i] = malloc(sizeof(char) * (HEIGHT + 1));
+		for (j = 0; j < HEIGHT + 1; j++)
 		{
 			screen[i][j] = ' ';
 		}
 	}
-
 	loop();
 
 	return 0;
